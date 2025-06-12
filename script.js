@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // Función para crear un elemento de tarea
-    const createTaskElement = (task, index) => {
+    const createTaskElement = (task) => {
         const li = document.createElement('li');
         li.className = `task-item ${task.completed ? 'completed' : ''}`;
         
@@ -29,7 +29,8 @@ document.addEventListener('DOMContentLoaded', () => {
         checkbox.className = 'task-checkbox';
         checkbox.checked = task.completed;
         checkbox.addEventListener('change', () => {
-            tasks[index].completed = checkbox.checked;
+            const currentIndex = tasks.indexOf(task);
+            tasks[currentIndex].completed = checkbox.checked;
             li.classList.toggle('completed');
             saveTasks();
             updatePendingCount();
@@ -43,7 +44,8 @@ document.addEventListener('DOMContentLoaded', () => {
         deleteBtn.className = 'delete-btn';
         deleteBtn.textContent = 'Eliminar';
         deleteBtn.addEventListener('click', () => {
-            tasks.splice(index, 1);
+            const currentIndex = tasks.indexOf(task);
+            tasks.splice(currentIndex, 1);
             li.remove();
             saveTasks();
             updatePendingCount();
@@ -64,8 +66,8 @@ document.addEventListener('DOMContentLoaded', () => {
             if (filter === 'completed') return task.completed;
         });
         
-        filteredTasks.forEach((task, index) => {
-            const li = createTaskElement(task, tasks.indexOf(task));
+        filteredTasks.forEach(task => {
+            const li = createTaskElement(task);
             taskList.appendChild(li);
         });
     };
